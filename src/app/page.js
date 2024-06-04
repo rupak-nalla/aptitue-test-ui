@@ -50,6 +50,8 @@ export default function Home() {
     console.log(responses);
   }
   function handlePrev() {
+    const opSelected=selectedValue;
+    setSelectedValue(null);
     if (i==1) {
       setI(Object.keys(qs).length);
       responses[i].seen=true;
