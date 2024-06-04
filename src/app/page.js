@@ -3,13 +3,31 @@ import CountdownTimer from "../app/components/countdown"
 import questions from "../app/data/questions"
 import { useState } from 'react';
 export default function Home() {
+
   const [responses, setData1] = useState([]);
   const qs  = questions;
+
+
+
   let [i,setI]=useState(1);
   const handleAddData = (newData) => {
     setData1([...responses, newData]);
   };
+
+  const [ 
+      selectedValue, 
+      setSelectedValue, 
+  ] = useState(""); 
+
+  const handleRadioChange = ( 
+      value 
+  ) => { 
+      setSelectedValue(value); 
+  }; 
+  
   function handleNext() {
+    console.log(selectedValue);
+    setSelectedValue(null);
     if (i==Object.keys(qs).length) {
       setI(1)
     }
@@ -59,10 +77,37 @@ export default function Home() {
                   {/* options */}
                   {Object.keys(qs[i].Options).map((optionKey) => (
                     
-                    <div class="flex items-center">
-                      <input key={`${qs.Q1}-${optionKey}`} type="radio" id="option1" name="options" value="option1" class="h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                      <label for={qs[i].Options[optionKey]} class="ml-2 text-sm font-medium ">{qs[i].Options[optionKey]}</label>
-                    </div>
+                    // <div class="flex items-center">
+                    //   <input key={`${qs.Q1}-${optionKey}`} type="radio" id="option1" name="options" value="option1" class="h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                    //   <label for={qs[i].Options[optionKey]} class="ml-2 text-sm font-medium ">{qs[i].Options[optionKey]}</label>
+                    // </div>
+
+                  <div class="flex items-center">
+                    <input 
+                      key={`${qs.Q1}-${optionKey}`}
+                      type="radio"
+                      class="h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      id="option1"
+                      value= {qs[i].Options[optionKey]}
+                      checked={ 
+                          selectedValue === qs[i].Options[optionKey]
+                      } 
+                      onChange={() => 
+                          handleRadioChange( 
+                            qs[i].Options[optionKey]
+                          ) 
+                    } /> 
+                    <label htmlFor={qs[i].Options[optionKey]} class="ml-2 text-sm font-medium "> 
+                    {qs[i].Options[optionKey]}
+                    </label>
+                  </div>
+
+
+
+
+
+
+
                   ))}
                   
                 </div>
