@@ -4,50 +4,82 @@ import questions from "../app/data/questions"
 import { useState } from 'react';
 export default function Home() {
 
-  const [responses, setData1] = useState([]);
+  
   const qs  = questions;
 
-
-
   let [i,setI]=useState(1);
-  const handleAddData = (newData) => {
-    setData1([...responses, newData]);
-  };
-
+  
   const [ 
       selectedValue, 
       setSelectedValue, 
-  ] = useState(""); 
+  ] = useState(null); 
 
   const handleRadioChange = ( 
       value 
   ) => { 
       setSelectedValue(value); 
   }; 
-  
+
+  let newDict={}
+  for (let j=1;j<=Object.keys(qs).length;j++){
+    newDict[j]={
+      "QNo":j,
+      "attempted":false,
+      "seen":false,
+      "markedForReview":false,
+      "response":null
+    }
+  }
+  const [responses,setData]=useState(newDict)
   function handleNext() {
-    console.log(selectedValue);
+    const opSelected=selectedValue;
     setSelectedValue(null);
+    if (opSelected) {
+      responses[i].attempted=true;
+      responses[i].response=opSelected;
+    }
     if (i==Object.keys(qs).length) {
-      setI(1)
+      setI(1);
+      responses[i].seen=true;
     }
     else{
       setI(i+1)
+      responses[i].seen=true;
     }
+    console.log(responses);
   }
   function handlePrev() {
     if (i==1) {
-      setI(Object.keys(qs).length)
+      setI(Object.keys(qs).length);
+      responses[i].seen=true;
     } else {
-      setI(i-1)
+      setI(i-1);
+      responses[i].seen=true;
     }
     console.log(i);
   }
-  function handleSaveAndNext() {
-    
+  function handleMarkAndNext() {
+    const opSelected=selectedValue;
+    setSelectedValue(null);
+    responses[i].markedForReview=true;
+    if (opSelected) {
+      responses[i].attempted=true;
+      responses[i].response=opSelected;
+    }
+    if (i==Object.keys(qs).length) {
+      setI(1);
+      responses[i].seen=true;
+    }
+    else{
+      setI(i+1)
+      responses[i].seen=true;
+    }
+    console.log(responses);
   }
   function handleJumpQuestion(Qno) {
-    setI(Qno)
+    setI(Qno);
+    responses[i].seen=true;
+    console.log(responses);
   }
   function handleSubmit() {
     
@@ -90,7 +122,7 @@ export default function Home() {
                       id="option1"
                       value= {qs[i].Options[optionKey]}
                       checked={ 
-                          selectedValue === qs[i].Options[optionKey]
+                          selectedValue === qs[i].Options[optionKey] || responses[i].response === qs[i].Options[optionKey]
                       } 
                       onChange={() => 
                           handleRadioChange( 
@@ -116,7 +148,7 @@ export default function Home() {
               <div class="h-[10%]  p-4">
                 <div class="row space-y-4">
                   <button class="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded m-1" onClick={handlePrev}>Previous</button>
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded m-1" onClick={handleSaveAndNext}>Save & next</button>
+                  <button class="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded m-1" onClick={handleMarkAndNext}>Mark For Review & Next</button>
                   <button class="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded m-1" onClick={handleNext}>Next</button>
                 </div>
               </div>
@@ -133,12 +165,23 @@ export default function Home() {
                     {number}
                   </button>
                 ): (
-                  <button key={number} onClick={()=>{handleJumpQuestion(number)}} class="bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded">
+                  <button key={number} onClick={()=>{handleJumpQuestion(number)}} className=
+                  {` text-white font-bold py-2 px-4 rounded ${
+                    responses[number].markedForReview===true && responses[number].attempted===false
+                      ?'bg-violet-500 hover:bg-violet-700'
+                      :responses[number].seen === true && responses[number].attempted === false
+                      ? 'bg-red-400 hover:bg-red-700'
+                      : responses[number].seen === true && responses[number].attempted === true
+                      ? 'bg-lime-500 hover:bg-lime-700'
+                      : 'bg-slate-500 hover:bg-slate-700'
+                  }`}
+                  >
                     {number}
                   </button>
                 )
                 
               ))}
+              
             </div>
             <div class="flex justify-center m-10">
               <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto" onClick={handleSubmit}>
