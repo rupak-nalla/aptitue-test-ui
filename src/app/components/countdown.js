@@ -45,6 +45,6 @@ return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0
 };
 
 return (
-     <h3 class="text-white font-bold bg-gray-600 p-2 rounded-md">{formatTimeLeft(timeLeft)}</h3>
+     <h3 class="text-white font-bold bg-gray-600 p-2 ">{formatTimeLeft(timeLeft)}</h3>
 );
 }
