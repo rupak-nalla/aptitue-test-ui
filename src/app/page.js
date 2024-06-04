@@ -2,6 +2,7 @@
 import CountdownTimer from "../app/components/countdown"
 import questions from "../app/data/questions"
 import { useState } from 'react';
+
 export default function Home() {
 
   
@@ -133,12 +134,6 @@ export default function Home() {
                     {qs[i].Options[optionKey]}
                     </label>
                   </div>
-
-
-
-
-
-
 
                   ))}
                   
