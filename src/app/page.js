@@ -14,7 +14,7 @@ export default function Home() {
   const [score,setScore]=useState(0);
   const [rollNo,setRollNo]=useState("");
   let [i,setI]=useState(1);
-  
+  const [CandidateName,setName]=useState('');
   const [ 
       selectedValue, 
       setSelectedValue, 
@@ -109,6 +109,7 @@ export default function Home() {
       const formData = {
         "time":isoDateTime ,
         "rollNo":rollNo ,
+        "CandidateName":CandidateName,
         "score":score,
         "filePath":"AptitudeTest.xlsx"
       };
@@ -182,7 +183,10 @@ export default function Home() {
                             <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter You Roll No</label>
                             <input onChange={(e)=>{setRollNo(e.target.value) }} type="text" name="text" id="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Roll No" required />
                         </div>
-                        
+                        <div>
+                            <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter Your Name</label>
+                            <input onChange={(e)=>{setName(e.target.value) }} type="text" name="text" id="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Name" required />
+                        </div>
                         <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to Exam</button>
                         
                     </form>
